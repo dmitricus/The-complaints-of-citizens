@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Статистика за {{ year }} год{% endblock %}
+<!--<script>
+{% block jquery %}
+var endpoint = '/complaints/statistic/api/complaintchart/data/'
+var defaultData = [];
+var defaultLabel = 'label';
+var defaultLabels = [];
+
+var defaultBackgroundColor = [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ];
+var defaultBorderColor = [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ];
+
+$.ajax({
+    method: "GET",
+    url: endpoint,
+    success: function(data){
+        defaultLabel = data.label
+        defaultLabels = data.labels
+        defaultData = data.default
+        //{{ complaint_list.0.stat_range_date_cost|slice:"1:" }}
+        setChart()
+    },
+    error: function(error_data){
+    console.log("error")
+        console.log(error_data)
+    }
+})
+function setChart(){
+    var ctx = document.getElementById("complaintChart").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: defaultLabels,
+                    datasets: [{
+                        label: defaultLabel,
+                        data: defaultData,
+                        backgroundColor: defaultBorderColor,
+                        borderColor: defaultBackgroundColor,
+                        borderWidth: 1
+                        }]
+                 }
+             })
+}
+{% endblock %}
+</script>-->
+{% block main %}
+{% load widget_tweaks %}
+
+<table class="table table-bordered table-sm">
+    <thead class="thead-inverse">
+    <tr>
+        <th>#</th>
+        <th>Текущий год(ежемесячно, ежеквартально, по итогам года)</th>
+        <th>Аналогичный период предыдущего года</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>Количество обращений, перешедших с предыдущего периода</th>
+
+        <td>{{ complaint_list.0.stat_old_complaint_cost }}</td>
+        <td>{{ complaint_list.0.stat_old_complaint_cost }}</td>
+
+    </tr>
+    <tr>
+        <th>Поступило за отчетный период</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_complaint_cost }}</td>
+        <td>{{ complaint_list.0.stat_complaint_cost }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>Электронные обращения</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_stat_type_cost }}</td>
+        <td>{{ complaint_list.0.stat_stat_type_cost }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>Коллективные обращения</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_collective_appeal_cost }}</td>
+        <td>{{ complaint_list.0.stat_collective_appeal_cost }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>Повторные обращения</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_repeated_appeal_cost }}</td>
+        <td>{{ complaint_list.0.stat_repeated_appeal_cost }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>Поступило обращений всего</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_all_cost }}</td>
+        <td>{{ complaint_list.0.stat_all_cost }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>Рассмотрено обращений в отчетном периоде</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_is_considered_cost }}</td>
+        <td>{{ complaint_list.0.stat_is_considered_cost }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>Количество обращений взятые на контроль</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_control_appeal_cost }}</td>
+        <td>{{ complaint_list.0.stat_control_appeal_cost }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th colspan="3">Тематика вопросов, содержащихся в письменных обращениях граждан</th>
+    </tr>
+    <tr>
+        <th>основы государственного управления</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_public_admin_cost }}</td>
+        <td>{{ complaint_list.0.stat_public_admin_cost }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>социальная защита населения</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_social_protection_cost }}</td>
+        <td>{{ complaint_list.0.stat_social_protection_cost }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>улучшение жилищных условий</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_housing_conditions_cost }}</td>
+        <td>{{ complaint_list.0.stat_housing_conditions_cost }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>образование</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_education_cost }}</td>
+        <td>{{ complaint_list.0.stat_education_cost }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>здравоохранение</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_health_cost }}</td>
+        <td>{{ complaint_list.0.stat_health_cost }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>ЖКХ</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_hcs_cost }}</td>
+        <td>{{ complaint_list.0.stat_hcs_cost }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>законность и правопорядок</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_law_and_order_cost }}</td>
+        <td>{{ complaint_list.0.stat_law_and_order_cost }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>иные</th>
+        {% if complaint_list %}
+        <td>{{ complaint_list.0.stat_other_cost }}</td>
+        <td>{{ complaint_list.0.stat_other_cost }}</td>
+        {% endif %}
+    </tr>
+    </tbody>
+</table>
+
+
+<form action="{% url 'generate_document' %}" method="post">
+    {% csrf_token %}
+    <div class="well">
+        <h4 style="margin-top: 0">Генерация отчета</h4>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-3">
+                <div>{{ form.start_date.label }}</div>
+                <div>{{ form.start_date|attr:"type:date"|attr:"class:form-control" }}</div>
+            </div>
+            <div class="form-group col-sm-6 col-md-3">
+                <div>{{ form.end_date.label }}</div>
+                <div>{% render_field form.end_date type="type:date" class="form-control" %}</div>
+            </div>
+            <div class="form-group col-sm-6 col-md-5"></div>
+            <div class="form-group col-sm-16 col-md-5">
+                <button type="submit" class="btn btn-primary">
+                    Создать
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-sm-3" url-endpoint="{% url 'api-data' %}">
+        <h1>Диаграмма</h1>
+        <canvas id="complaintChart" width="100" height="100"></canvas>
+    </div>
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-3">
+    </div>
+</div>
+{% endblock %}

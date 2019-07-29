@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Добавление жалобы{% endblock %}
+{% block main %}
+{% load widget_tweaks %}
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+        <h2 class="display-5">Добавление жалобы</h2>
+    </div>
+</div>
+{% if messages %}
+<div class="alert alert-success" role="alert">
+<ul class="message-list">
+{% for message in messages %}
+<li class="{{ message.tags }}">{{ message }}</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+<form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <div>{{ form.name.label }}</div>
+            <div>{% render_field form.name class="form-control" %}</div>
+            <small  class="form-text text-muted">Какой то мелкий текст</small>
+        </div>
+        <div class="form-group">
+            <div>{{ form.fio.label }}</div>
+            <div>{% render_field form.fio class="form-control" %}</div>
+            <small  class="form-text text-muted">Какой то мелкий текст</small>
+        </div>
+        <div class="form-group">
+            <div>{{ form.address.label }}</div>
+            <div>{% render_field form.address class="form-control" %}</div>
+            <small  class="form-text text-muted">Какой то мелкий текст</small>
+        </div>
+        <div class="form-group">
+            <div>{{ form.classifier_og.label }}</div>
+            <div>{% render_field form.classifier_og class="form-control" %}</div>
+            <small class="form-text text-muted">Какой то мелкий текст</small>
+        </div>
+        <div class="form-group">
+            <div>{{ form.description.label }}</div>
+            <div>{% render_field form.description class="form-control" %}</div>
+            <small class="form-text text-muted">Какой то мелкий текст</small>
+        </div>
+        <div class="form-group">
+            <div>{{ form.file_complaint.label }}</div>
+            <div>{% render_field form.file_complaint class="form-control" %}</div>
+            <small class="form-text text-muted">Какой то мелкий текст</small>
+        </div>
+        <div class="form-group">
+            <div>{{ form.admissions.label }}</div>
+            <div>{% render_field form.admissions class="form-control" %}</div>
+            <small class="form-text text-muted">Какой то мелкий текст</small>
+        </div>
+        <div class="form-group">
+            <div>{{ form.in_stock.label }}</div>
+            <div> {% render_field form.in_stock class="form-control" %}</div>
+            <small class="form-text text-muted">Какой то мелкий текст</small>
+        </div>
+        <div class="form-group">
+            <div>{{ form.group.label }}</div>
+            <div>{% render_field form.group class="form-control" %}</div>
+            <small class="form-text text-muted">Какой то мелкий текст</small>
+        </div>
+        <div class="form-group">
+            <div>{{ form.collective_appeal.label }}</div>
+            <div>{% render_field form.collective_appeal class="form-control" %}</div>
+        </div>
+        <div class="form-group">
+            <div>{{ form.repeated_appeal.label }}</div>
+            <div>{% render_field form.repeated_appeal class="form-control" %}</div>
+        </div>
+        <div class="form-group">
+            <div>{{ form.control_appeal.label }}</div>
+            <div>{% render_field form.control_appeal class="form-control" %}</div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit">Добавить</button>
+        </div>
+</form>
+        <div class="form-group">
+            <a class="btn btn-primary" href="{% url 'index' %}">Назад</a>
+        </div>
+{% endblock %}

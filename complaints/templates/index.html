@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}{{ group.name }}{% endblock %}
+{% block main %}
+{% if messages %}
+<div class="alert alert-success" role="alert">
+<ul class="message-list">
+{% for message in messages %}
+<li class="{{ message.tags }}">{{ message }}</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+{% if perms.complaints %}
+{% if perms.complaints.can_administrator %}
+<div class="btn-group-vertical">
+  <!-- Обычные кнопки -->
+  <!-- Кнопка с выпадающим меню -->
+  <div class="btn-group">
+    <button type="button" data-toggle="dropdown" class="btn btn-info dropdown-toggle">
+      Список доступных отделов
+      <span class="caret"></span>
+    </button>
+    <!-- Выпадающее меню -->
+    <ul class="dropdown-menu">
+      <!-- Пункты меню -->
+        {% for group in groups %}
+            <li><a href="{% url 'index' group.id %}"> {{ group }}</a></li>
+        {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+{% endif %}
+<table class="table table-sm">
+    <thead class="thead-inverse">
+        <tr>
+            <th>Рег. номер</th>
+            <th>Тип</th>
+            <th>ФИО</th>
+            <th>Поступило из</th>
+            <th>Назначен Отел</th>
+            <th>Дата регистрации</th>
+            <th>Дата ответа</th>
+            <th>Правка</th>
+            <!-- <th>&nbsp;</th>-->
+        </tr>
+    </thead>
+    {% for complaint in object_list %}
+    <tr class="bg-faded {% if complaint.control_appeal %}danger{% endif %}{% if complaint.appeal_is_considered %}success{% endif %}">
+        <td><a href="{% url 'complaint' complaint_id=complaint.id %}?page={{ page_obj.number }}">{{ complaint.name }}</a></td>
+        <td>{{ complaint.in_stock }}</td>
+        <td>{{ complaint.fio }}</td>
+        <td>{{ complaint.admissions }}</td>
+        <td>{{ complaint.group }}</td>
+        <td>{{ complaint.reg_date }}</td>
+        <td>{{ complaint.res_date }}</td>
+        <td><a class="btn btn-primary" href="{% url 'complaint_edit' complaint_id=complaint.id %}?page={{ page_obj.number }}">Изменить</a></td>
+        <!-- <td><a href="{% url 'complaint_delete' complaint_id=complaint.id %}?page={{ page_obj.number }}">Удалить</a></td>-->
+    </tr>
+    {% endfor %}
+</table>
+{% if paginator.num_pages > 1 %}
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+    <!-- Показывам кнопку со ссылкой, если есть предыдущая страница -->
+    <li class="page-item"><a class="page-link" href="{% url 'index' group_id=group.pk %}?page={{ page_obj.previous_page_number }}">Назад</a></li>
+    {% endif %}
+
+    <!-- Прибавляем к номеру текущей страницы -4 (т.е. отнимаем 4) -->
+    {% if page_obj.number|add:'-4' > 0 %}
+    <!-- Если до текущей страницы есть больше 4 страниц, показываем многоточие -->
+    <li class="page-item disabled"><a class="page-link">...</a></li>
+    {% endif %}
+
+    {% if page_obj.number|add:'-3' > 0 %}
+    <!-- Если до текущей страницы есть ещё три страницы -->
+    <li class="page-item"><a class="page-link" href="{% url 'index' group_id=group.pk %}?page={{ page_obj.number|add:'-3' }}">{{ page_obj.number|add:'-3' }}</a></li>
+    {% endif %}
+    {% if page_obj.number|add:'-2' > 0 %}
+    <!-- Если до текущей страницы есть ещё две страницы -->
+    <li class="page-item"><a class="page-link" href="{% url 'index' group_id=group.pk %}?page={{ page_obj.number|add:'-2' }}">{{ page_obj.number|add:'-2' }}</a></li>
+    {% endif %}
+    {% if page_obj.number|add:'-1' > 0 %}
+    <!-- Если до текущей страницы есть ещё одна страница -->
+    <li class="page-item"><a class="page-link" href="{% url 'index' group_id=group.pk %}?page={{ page_obj.number|add:'-1' }}">{{ page_obj.number|add:'-1' }}</a></li>
+    {% endif %}
+
+    <!-- Номер текущей страницы -->
+    <li class="page-item active"><a class="page-link" > {{ page_obj.number }}</a></li>
+
+    {% if page_obj.number|add:'1' <= paginator.num_pages %}
+    <!-- Если после текущей страницы есть ещё одна страница -->
+    <li class="page-item"><a class="page-link" href="{% url 'index' group_id=group.pk %}?page={{ page_obj.number|add:'1' }}">{{ page_obj.number|add:'1' }}</a></li>
+    {% endif %}
+    {% if page_obj.number|add:'2' <= paginator.num_pages %}
+    <!-- Если после текущей страницы есть ещё две страницы -->
+    <li class="page-item"><a class="page-link" href="{% url 'index' group_id=group.pk %}?page={{ page_obj.number|add:'2' }}">{{ page_obj.number|add:'2' }}</a></li>
+    {% endif %}
+    {% if page_obj.number|add:'3' <= paginator.num_pages %}
+    <!-- Если после текущей страницы есть ещё три страницы -->
+    <li class="page-item"><a class="page-link" href="{% url 'index' group_id=group.pk %}?page={{ page_obj.number|add:'3' }}">{{ page_obj.number|add:'3' }}</a></li>
+    {% endif %}
+
+    {% if page_obj.number|add:'4' <= paginator.num_pages %}
+    <!-- Если после текущей страницы есть ещё четыре страницы -->
+    <li class="page-item disabled"><a class="page-link">...</a></li>
+    {% endif %}
+
+    {% if page_obj.has_next %}
+    <!-- Показывам кнопку со ссылкой, если есть следующая страница -->
+    <a class="page-link" href="{% url 'index' group_id=group.pk %}?page={{ page_obj.next_page_number }}">Вперед</a>
+    {% endif %}
+    </ul>
+</nav>
+<form action="." method="get">
+    <div class="well">
+        <div class="row">
+            <div class="form-group col-sm-11 col-md-11"></div>
+            <div class="form-group col-sm-1 col-md-1">
+                <select name="paginate_by" class="form-control" onchange="this.form.submit()">
+                    <option VALUE="25">25</option>
+                    <option VALUE="50">50</option>
+                    <option VALUE="75">75</option>
+                    <option VALUE="100">100</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</form>
+{% endif %}
+{% endblock %}

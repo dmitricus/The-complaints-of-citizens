@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Поиск{% endblock %}
+{% block main %}
+{% load widget_tweaks %}
+{% load paginate %}
+<form method="get">
+    <div class="well">
+      <h4 style="margin-top: 0">Расширенный поиск</h4>
+      <div class="row">
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.name.label_tag }}
+          {% render_field filter.form.name class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.fio.label_tag }}
+          {% render_field filter.form.fio class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.admissions.label_tag }}
+          {% render_field filter.form.admissions class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.classifier_og.label }}
+            {% render_field filter.form.classifier_og class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.group.label_tag }}
+          {% render_field filter.form.group class="form-control" %}
+        </div>
+          <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.in_stock.label_tag }}
+          {% render_field filter.form.in_stock class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.reg_date.label_tag }}
+          {% render_field filter.form.reg_date type="date" class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.res_date.label_tag }}
+          {% render_field filter.form.res_date type="date" class="form-control" %}
+        </div>
+          <div class="form-group col-sm-16 col-md-5">
+          <button type="submit" class="btn btn-primary">
+            Найти
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </form>
+<table class="table table-sm">
+    <thead class="thead-inverse">
+        <tr>
+            <th>Рег. номер</th>
+            <th>Тип</th>
+            <th>ФИО</th>
+            <th>Поступило из</th>
+            <th>Назначен Отел</th>
+            <th>Дата регистрации</th>
+            <th>Дата ответа</th>
+            <th>Правка</th>
+            <!-- <th>&nbsp;</th>-->
+        </tr>
+    </thead>
+
+{% paginate paginate_by filter.qs as paginated_items %}
+    {% for complaint in paginated_items %}
+    <tr>
+        <td><a href="{% url 'complaint' complaint_id=complaint.id %}?page={{ page_obj.number }}">{{ complaint.name }}</a></td>
+        <td>{{ complaint.in_stock }}</td>
+        <td>{{ complaint.fio }}</td>
+        <td>{{ complaint.admissions }}</td>
+        <td>{{ complaint.group }}</td>
+        <td>{{ complaint.reg_date }}</td>
+        <td>{{ complaint.res_date }}</td>
+        <td><a class="btn btn-primary" href="{% url 'complaint_edit' complaint_id=complaint.id %}?page={{ page_obj.number }}">Изменить</a></td>
+        <!-- <td><a href="{% url 'complaint_delete' complaint_id=complaint.id %}?page={{ page_obj.number }}">Удалить</a></td>-->
+    </tr>
+    {% endfor %}
+</table>
+<nav aria-label="...">{% show_pages %}</nav>
+{% endblock %}

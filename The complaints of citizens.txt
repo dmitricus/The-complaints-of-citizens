@@ -1,0 +1,67 @@
+# The complaints of citizens - обращения граждан (СОС)
+########################### Установка #####################################
+# Установка Django
+#pip install Django==1.11.5
+Новая
+pip install Django
+
+
+# Доп библиотеки
+pip install django-filter
+pip install django-widget-tweaks
+pip install django_select2
+pip install wfastcgi
+pip install psycopg2
+pip install django-highcharts
+pip install reportlab
+pip install secretary
+pip install django-autocomplete-light
+pip install djangorestframework
+pip install markdown
+pip install django-bootstrap3
+pip install django-simple-pagination
+pip install pytils
+########################## Обновление ##################################################
+pip install -U django-filter
+pip install -U django-widget-tweaks
+pip install -U django_select2
+pip install -U wfastcgi
+pip install -U psycopg2
+pip install -U django-highcharts
+pip install -U reportlab
+pip install -U secretary
+pip install -U django-autocomplete-light
+pip install -U djangorestframework
+pip install -U markdown
+pip install -U django-bootstrap3
+pip install -U django-simple-pagination
+pip install -U pytils
+########################################################################################
+
+cd /D E:\COC
+cd /D C:\Users\Администратор\Documents\COC
+cd /D C:\site\COC
+
+# Запуск тестового сервера
+manage.py runserver
+
+manage.py runserver 0.0.0.0:8000
+
+# Создание суперпользователя
+manage.py createsuperuser
+
+# Синхронизация с базой даннный, делается один раз при создании
+manage.py makemigrations
+manage.py migrate
+
+Создает приложение
+manage.py startapp complaints
+
+python manage.py collectstatic
+
+
+
+Django 2.0 удаляет модуль django.core.urlresolvers, который был перемещен в django.urls в версии 1.10. Вы должны изменить любой импорт, чтобы использовать вместо него django.urls, например так:
+
+from django.urls import reverse
+Обратите внимание, что Django 2.0 удаляет некоторые функции, которые ранее были в django.core.urlresolvers, поэтому вам может потребоваться внести некоторые изменения, прежде чем ваш код заработает. Подробности об этих дополнительных изменениях см. В функциях, устаревших в 1.9.

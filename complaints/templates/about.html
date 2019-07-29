@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Выход{% endblock %}
+{% block main %}
+<div class="jumbotron">
+    <div class="container">
+        <h2 class="display-5">Выход из подсистемы :: Обращения граждан</h2>
+    </div>
+</div>
+<p>Вы успешно выполнили процедуру выхода с сайта.</p>
+<p><a class="btn btn-default" href="{% url 'index' %}">На главную</a></p>
+{% endblock %}

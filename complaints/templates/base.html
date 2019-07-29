@@ -1,0 +1,78 @@
+<!doctype html>
+{% load staticfiles %}
+{% load i18n %}
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        {% include "includes/inc_css.html" %}
+        {% block css %}{% endblock %}
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+        <!--<div class="container-fluid">-->
+        <div class="container">
+            <header>
+                {% if user.is_authenticated %}
+                <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+                    <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" width="70" height="70" alt=""></a>
+                  <a class="navbar-brand" href="{% url 'index' %}">Обращения граждан</a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                    <ul class="navbar-nav mr-auto">
+                        {% if perms.complaints %}
+                            {% if perms.complaints.can_administrator %}
+                                <li class="nav-item">
+                                 <a href="{% url 'complaint_add' %}" class="nav-link text-white" role="button" aria-pressed="true">Добавить обращение</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="{% url 'archive' %}">Архив Жалоб</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="{% url 'search' %}">Поиск</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="{% url 'statistic' %}">Статистика</a>
+                                </li>
+                            {% endif %}
+                            {% if perms.complaints.can_customers %}
+                                <li class="nav-item">
+                                  <a class="nav-link text-white" href="{% url 'search-group' %}">Поиск по отделу</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+                   <!-- <form class="form-inline my-2 my-lg-0">
+                      <input class="form-control mr-sm-2" type="text" placeholder="Поиск" aria-label="Search">
+                      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+                    </form>-->
+                  </div>
+                </nav>
+                {% endif %}
+            </header>
+            <main>
+                {% if user.is_authenticated %}
+                    <div class="alert alert-info" role="alert">
+                      <strong>Добро пожаловать, {{ user.get_full_name }}!</strong><a class="btn btn-default" href="{% url 'logout' %}">Выйти</a>
+                    </div>
+                {% endif %}
+                {% block main %}
+
+                {% endblock %}
+            </main>
+            {% if user.is_authenticated %}
+            <footer class="footer navbar-fixed-bottom">
+                <p>Все права принадлежат разработчикам сайта.</p>
+            </footer>
+            {% endif %}
+            {% include "includes/inc_js.html" %}
+            <script>
+                $(document).ready(function(){
+                    {% block jquery %}{% endblock %}
+                })
+            </script>
+        </div>
+    </body>
+</html>

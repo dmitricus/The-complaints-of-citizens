@@ -1,0 +1,46 @@
+<!doctype html>
+{% extends "base.html" %}
+{% block title %}{{ complaint.name }} :: {{ complaint.group.name }}{% endblock %}
+{% block main %}
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+        <h2 class="display-5">{{ complaint.group.name }}</h2>
+    </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    {{ complaint.name }}
+  </div>
+     {% load staticfiles %}
+    <div class="card-body">
+        <p class="group"><b>Отдел:</b> {{ complaint.group.name }}</p>
+        <p><b>Номер обращения: </b><a href="{% url 'complaint' complaint_id=complaint.id %}?page={{ page_obj.number }}">{{ complaint.name }}</a></p>
+        <p><b>Дата регистрации: </b>{{ complaint.reg_date }}</p>
+        <p><b>ФИО: </b> {{ complaint.fio }}</p>
+        <p><b>Адрес: </b> {{ complaint.address }}</p>
+        <p><b>Код Классификатора: </b>{{ complaint.classifier_og }}</p>
+        <p><b>Содержание обращения: </b> {{ complaint.description }}</p>
+        {% if complaint.file_complaint != "complaints/files/complaint" %}
+        <p><b>Файл вопроса: </b><a href='{{ complaint.file_complaint.url }}'><img src="{% static 'img/pdf.png' %}" height="50" alt=""></a></p>
+        {% else %}
+        <p><b>Файл вопроса: Отсутствует </b></p>
+        {% endif %}
+        <p><b>Поступило: </b>{{ complaint.admissions }}</p>
+        <p><b>Тип обращения: </b>{{ complaint.in_stock }}</p>
+        <p><b>Назначен отдел: </b>{{ complaint.group }}</p>
+        {% if complaint.res_date %}
+        <p><b>Дата ответа: </b>{{ complaint.res_date }}</p>
+        {% else %}
+        <p><b>Дата ответа: Отсутствует </b></p>
+        {% endif %}
+        {% if complaint.file_answer != "complaints/files/answer" %}
+        <p><b>Файл ответа: </b><a href='{{ complaint.file_answer.url }}'><img src="{% static 'img/pdf.png' %}" height="50" alt=""></a></p>
+        {% else %}
+        <p><b>Файл ответа: Отсутствует </b></p>
+        {% endif %}
+        <p><a class="btn btn-primary" href="{% url 'index' group_id=complaint.group.id %}?page={{ pn }}">Назад</a></p>
+    </div>
+</div>
+{% endblock %}

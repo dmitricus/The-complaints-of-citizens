@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Ошибка {% endblock %}
+{% block main %}
+<div class="jumbotron">
+<div class="alert alert-warning" role="alert">
+  <strong>Внимание!</strong> Информация для просмотра ограничена.
+</div>
+</div>
+<p><a class="btn btn-primary" href="{% url 'index' %}">На главную</a></p>
+{% endblock %}

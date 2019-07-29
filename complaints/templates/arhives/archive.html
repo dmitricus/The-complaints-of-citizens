@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}{{ group.name }}{% endblock %}
+{% block main %}
+<div class="jumbotron">
+    <div class="container">
+        <h2 class="display-5">Ахив жалоб</h2>
+    </div>
+</div>
+<div class="btn-group" role="group" aria-label="Basic example">
+    {% for date in date_list %}
+        <button type="button" class="btn btn-secondary">
+            <a class="nav-link text-white" href="{% url 'year_archive' year=date.year %}">{{ date|date:"Y" }}</a>
+        </button>
+    {% endfor %}
+</div>
+<table class="table table-bordered table-sm">
+    <thead class="thead-inverse">
+        <tr>
+            <th>Рег. номер</th>
+            <th>Тип</th>
+            <th>ФИО</th>
+            <th>Поступило из</th>
+            <th>Назначен Отел</th>
+            <th>Дата регистрации</th>
+            <th>Дата ответа</th>
+            <th>Правка</th>
+            <!-- <th>&nbsp;</th>-->
+        </tr>
+    </thead>
+    {% for complaint in object_list %}
+    <tr>
+        <td><a href="{% url 'complaint' complaint_id=complaint.id %}?page={{ page_obj.number }}">{{ complaint.name }}</a></td>
+        <td>{{ complaint.in_stock }}</td>
+        <td>{{ complaint.fio }}</td>
+        <td>{{ complaint.admissions }}</td>
+        <td>{{ complaint.group }}</td>
+        <td>{{ complaint.reg_date }}</td>
+        <td>{{ complaint.res_date }}</td>
+        <td><a class="btn btn-primary" href="{% url 'complaint_edit' complaint_id=complaint.id %}?page={{ page_obj.number }}">Изменить</a></td>
+        <!-- <td><a href="{% url 'complaint_delete' complaint_id=complaint.id %}?page={{ page_obj.number }}">Удалить</a></td>-->
+    </tr>
+    {% endfor %}
+</table>
+{% include "includes/inc_pagination.html" %}
+{% endblock %}
